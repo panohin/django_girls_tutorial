@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.utils import timezone
 
-from . import models
+from .models import Post
 
 
 def post_list(request):
-	context = models.Post.objects.all()
-	return render(request, 'blog/post_list.html', context={})
+	posts = Post.objects.filter(published_date__lte=timezone.now())
+	return render(request, 'blog/post_list.html', {'posts':posts})
